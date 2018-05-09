@@ -114,6 +114,18 @@
       // load the tiles
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {maxZoom: 18,attribution: 'Map data &copy; <ahref="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,' +'Imagery © <a href="http://mapbox.com">Mapbox</a>',id: 'mapbox.streets'}).addTo(mymap);
 
+        // a function that can get the radius from after locate the user's location
+        function onLocationFound(e) {
+        var radius = 100;
+        L.marker(e.latlng).addTo(mymap).bindPopup("100 meters around you!").openPopup();
+        L.circle(e.latlng, radius).addTo(mymap);}
+
+        //an alert in case can't locate
+        function onLocationError(e) {
+          alert(e.message);
+        }
+        
+        mymap.locate({setView: true, maxZoom: 25});
 
         // create a variable for each of the layers we want to load/remove
         var questionlayer;
