@@ -117,15 +117,20 @@
         // a function that can get the radius from after locate the user's location
         function onLocationFound(e) {
         var radius = 100;
-        L.marker(e.latlng).addTo(mymap).bindPopup("100 meters around you!").openPopup();
+        L.marker(e.latlng).addTo(mymap).bindPopup("The questions that are within " + radius + " meters from you!");
         L.circle(e.latlng, radius).addTo(mymap);}
 
         //an alert in case can't locate
         function onLocationError(e) {
           alert(e.message);
         }
-        
-        mymap.locate({setView: true, maxZoom: 25});
+
+        // get the function of radius and alert
+        mymap.on('locationfound', onLocationFound);
+        mymap.on('locationerror', onLocationError);
+        // locate the user's location
+        mymap.locate({setView: true, maxZoom: 25, watch: true});
+
 
         // create a variable for each of the layers we want to load/remove
         var questionlayer;
@@ -187,18 +192,6 @@
 
                   // specify popup options 
                   var customOptions ={'maxWidth': '500','className' : 'custom'}
-                  
-                getLocation();
-                  function getLocation() {
-                    navigator.geolocation.getCurrentPosition(getPosition);
-                  }
-
-                  function getPosition(position){
-                 // get the user location on the question layer
-                 L.marker([position.coords.latitude,position.coords.longitude]).addTo(mymap).bindPopup("This is your position: "+"("+position.coords.latitude + "," + position.coords.longitude + ")").openPopup();
-                   mymap.setView([position.coords.latitude,position.coords.longitude]);
-
-                  }
                   
 
                   // get the question popup
